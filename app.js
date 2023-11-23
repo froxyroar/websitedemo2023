@@ -1,34 +1,54 @@
 const express = require('express');
 const path = require('path');
-const axios = require('axios');
 
 const app = express();
 
+// Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
-const weatherApiKey = 'YOUR_WEATHERBIT_API_KEY';
-const weatherApiUrl = 'https://api.weatherbit.io/v2.0/current';
+// Define your API endpoint
+app.get('/api/members', (req, res) => {
+  const members = [
+    {
+      name: 'Adam Wisnu P.',
+      role: 'Backend',
+      github: 'adamwisnup',
+      instagram: 'adam_wisnup',
+      linkedin: 'adamwisnup',
+    },
+    {
+      name: 'Raihan Putra D.',
+      role: 'Backend',
+      github: 'raiputradrmwn',
+      instagram: 'rai.drmwn',
+      linkedin: 'raihanputrad',
+    },
+    {
+      name: 'Muhardian Fatih',
+      role: 'Frontend',
+      github: 'muhardiann',
+      instagram: 'muhardianf',
+      linkedin: 'muhardianf',
+    },
+    {
+      name: 'Rifki Rosada',
+      role: 'Frontend',
+      github: 'froxyroar',
+      instagram: 'kuuhaku_riro',
+      linkedin: 'rifki-rosada-a8569125a',
+    },
+  ];
 
-app.get('/weather', async (req, res) => {
-    try {
-        const response = await axios.get(weatherApiUrl, {
-            params: {
-                city: 'Bandung',
-                key: weatherApiKey,
-            },
-        });
-
-        const weatherData = response.data.data[0];
-        res.json({
-            temperature: weatherData.temp,
-            condition: weatherData.weather.description,
-        });
-    } catch (error) {
-        console.error('Error fetching weather data:', error.message);
-        res.status(500).json({ error: 'Failed to fetch weather data' });
-    }
+  res.json(members);
 });
 
-app.listen(3000, () => {
-    console.log('App listening on port 3000');
+// All other routes will be handled by serving the index.html file
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Start the server
+const port = 3000;
+app.listen(port, () => {
+  console.log(`App listening on port ${port}`);
 });

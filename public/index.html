@@ -1,56 +1,99 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Bio</title>
+    <title>Cyber Academy - Module 3</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
+    <div id="webdevv">
+    <header>Website Development</header>
+    <img src="./assets/webdev.png" alt="webicon">
+    <p>Website development adalah proses pembuatan dan pemeliharaan sebuah situs web. 
+        Ini melibatkan sejumlah kegiatan, mulai dari perancangan tata letak dan struktur situs 
+        hingga pengembangan fungsionalitas dan fitur-fitur yang diperlukan.</p>
+    </div>
+
+    <div id="ourteams">
     <h1>Meet our team's members!</h1>
+    <div id="team-container"></div>
+    <script>
+        // ngefetch
+        fetch('/api/members')
+            .then((response) => response.json())
+            .then((members) => {
+                const teamContainer = document.getElementById('team-container');
 
-    <div class="card" id="member1">
-        <img src="./assets/Adam.jpg" alt="Member 1">
-        <h2>Adam Wisnu P.</h2>
-        <p>Backend</p>
-        <div class="social-icons">
-            <a href="https://www.instagram.com/" target="_blank"><img src="./assets/instagram.png" alt="Instagram"></a>
-            <a href="https://github.com/" target="_blank"><img src="./assets/github.png" alt="GitHub"></a>
-            <a href="https://www.linkedin.com/" target="_blank"><img src="./assets/linkedin.png" alt="LinkedIn"></a>
-        </div>
-    </div>
+                members.forEach((member, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.id = `member${index + 1}`;
 
-    <div class="card" id="member1">
-        <img src="./assets/Raihan.jpg" alt="Member 2">
-        <h2>Raihan Putra D.</h2>
-        <p>Backend</p>
-        <div class="social-icons">
-            <a href="https://www.instagram.com/" target="_blank"><img src="./assets/instagram.png" alt="Instagram"></a>
-            <a href="https://github.com/" target="_blank"><img src="./assets/github.png" alt="GitHub"></a>
-            <a href="https://www.linkedin.com/" target="_blank"><img src="./assets/linkedin.png" alt="LinkedIn"></a>
-        </div>
-    </div>
+                    const img = document.createElement('img');
+                    const imgSrc = `/assets/${member.name.replace(/\s/g, '_')}.jpg` || '/assets/default.jpg';
+                    img.src = imgSrc;
+                    img.alt = `Member ${index + 1}`;
 
-    <div class="card" id="member1">
-        <img src="assets/Fatih.jpg" alt="Member 3">
-        <h2>Muhardian Fatih</h2>
-        <p>Frontend</p>
-        <div class="social-icons">
-            <a href="https://www.instagram.com/" target="_blank"><img src="./assets/instagram.png" alt="Instagram"></a>
-            <a href="https://github.com/" target="_blank"><img src="./assets/github.png" alt="GitHub"></a>
-            <a href="https://www.linkedin.com/" target="_blank"><img src="./assets/linkedin.png" alt="LinkedIn"></a>
-        </div>
-    </div>
-    
-    <div class="card" id="member1">
-        <img src="assets/Rifki.jpg" alt="Member 4">
-        <h2>Rifki Rosada</h2>
-        <p>frontend</p>
-        <div class="social-icons">
-            <a href="https://www.instagram.com/" target="_blank"><img src="./assets/instagram.png" alt="Instagram"></a>
-            <a href="https://github.com/" target="_blank"><img src="./assets/github.png" alt="GitHub"></a>
-            <a href="https://www.linkedin.com/" target="_blank"><img src="./assets/linkedin.png" alt="LinkedIn"></a>
-        </div>
+                    const h2 = document.createElement('h2');
+                    h2.innerText = member.name;
+
+                    const p = document.createElement('p');
+                    p.innerText = member.role;
+
+                    const socialIcons = document.createElement('div');
+                    socialIcons.className = 'social-icons';
+
+                    // Add GitHub link
+                    if (member.github) {
+                        const githubLink = document.createElement('a');
+                        githubLink.href = `https://github.com/${member.github}`;
+                        githubLink.target = '_blank';
+
+                        const githubIcon = document.createElement('img');
+                        githubIcon.src = '/assets/github.png';
+                        githubIcon.alt = 'GitHub';
+
+                        githubLink.appendChild(githubIcon);
+                        socialIcons.appendChild(githubLink);
+                    }
+
+                    if (member.instagram) {
+                        const instagramLink = document.createElement('a');
+                        instagramLink.href = `https://instagram.com/${member.instagram}`;
+                        instagramLink.target = '_blank';
+
+                        const instagramIcon = document.createElement('img');
+                        instagramIcon.src = '/assets/instagram.png';
+                        instagramIcon.alt = 'Instagram';
+
+                        instagramLink.appendChild(instagramIcon);
+                        socialIcons.appendChild(instagramLink);
+                    }
+
+                    if (member.linkedin) {
+                        const linkedinLink = document.createElement('a');
+                        linkedinLink.href = `https://linkedin.com/in/${member.linkedin}`;
+                        linkedinLink.target = '_blank';
+
+                        const linkedinIcon = document.createElement('img');
+                        linkedinIcon.src = '/assets/linkedin.png';
+                        linkedinIcon.alt = 'LinkedIn';
+
+                        linkedinLink.appendChild(linkedinIcon);
+                        socialIcons.appendChild(linkedinLink);
+                    }
+
+                    card.appendChild(img);
+                    card.appendChild(h2);
+                    card.appendChild(p);
+                    card.appendChild(socialIcons);
+
+                    teamContainer.appendChild(card);
+                });
+            })
+            .catch((error) => console.error('Error fetching data:', error));
+    </script>
     </div>
 </body>
 </html>
